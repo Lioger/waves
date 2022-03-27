@@ -5,8 +5,24 @@ nav {
   align-items: center;
 
   button {
-    background: white;
-    border: 2px solid rgb(65, 65, 65);
+    &.dark {
+      color: $white;
+      border-color: $white;
+      &:hover {
+        color: $black;
+        background-color: $white;
+      }
+    }
+    &.light {
+      color: $black;
+      border-color: $black;
+      &:hover {
+        color: $white;
+        background-color: $black;
+      }
+    }
+    background: transparent;
+    border: 2px solid $black;
     cursor: pointer;
     padding: 0.5rem;
     transition: all 0.3s ease;
@@ -14,11 +30,6 @@ nav {
     -moz-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
-
-    &:hover {
-      background-color: rgb(65, 65, 65);
-      color: white;
-    }
   }
 }
 
