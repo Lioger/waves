@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/waves/static/css/main.17b1fa64.css",
+    "main.css": "/waves/static/css/main.2f9db23d.css",
     "main.js": "/waves/static/js/main.85df0df3.js",
     "index.html": "/waves/index.html",
-    "main.17b1fa64.css.map": "/waves/static/css/main.17b1fa64.css.map",
+    "main.2f9db23d.css.map": "/waves/static/css/main.2f9db23d.css.map",
     "main.85df0df3.js.map": "/waves/static/js/main.85df0df3.js.map"
   },
   "entrypoints": [
-    "static/css/main.17b1fa64.css",
+    "static/css/main.2f9db23d.css",
     "static/js/main.85df0df3.js"
   ]
 }
