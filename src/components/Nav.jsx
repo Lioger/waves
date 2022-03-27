@@ -9,7 +9,7 @@ const Nav = ({ setIsLibraryOpened, isLibraryOpened }) => {
         <FontAwesomeIcon icon={faMusic} /> Library
       </button>
     </nav>
-  )
-}
+  );
+};
 
 export default Nav;
