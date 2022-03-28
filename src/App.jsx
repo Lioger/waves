@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // Importing styles
 import "./styles/app.scss";
 // Importing components
@@ -16,6 +16,11 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLibraryOpened, setIsLibraryOpened] = useState(false);
   const [isDarkActive, setIsDarkActive] = useState(false);
+
+  useEffect(() => {
+    const bodyClassList = document.querySelector("body").classList;
+    isDarkActive ? bodyClassList.add("dark") : bodyClassList.remove("dark");
+  }, [isDarkActive]);
 
   const currentTheme = isDarkActive ? "dark" : "light";
 
