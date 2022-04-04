@@ -1,22 +1,20 @@
-import { useEffect, useState, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlay,
-  faPause,
-  faAngleLeft,
-  faAngleRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faPause, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { nextSong, prevSong } from '../actions/song';
+import { stopMusic, playMusic } from '../actions/player';
 
-const Player = ({
-  currentSong,
-  setCurrentSong,
-  isPlaying,
-  setIsPlaying,
-  songs,
-}) => {
-  // Refs
+const Player = ({ songs }) => {
+  const [songInfo, setSongInfo] = useState({
+    currentTime: 0,
+    duration: 0,
+  });
+  const currentSong = useSelector((state) => state.currentSong);
+  const isPlaying = useSelector((state) => state.isPlaying);
   const audioRef = useRef(null);
-  // Effects
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (isPlaying) {
       audioRef.current.play();
@@ -24,12 +22,8 @@ const Player = ({
       audioRef.current.pause();
     }
   }, [audioRef, isPlaying, currentSong]);
-  // State
-  const [songInfo, setSongInfo] = useState({
-    currentTime: 0,
-    duration: 0,
-  });
-  // Event handlers
+
+  const playClickHandler = () => (isPlaying ? dispatch(stopMusic()) : dispatch(playMusic()));
   const timeUpdateHandler = (e) => {
     const { currentTime, duration } = e.target;
     setSongInfo({ ...songInfo, currentTime, duration });
@@ -38,19 +32,17 @@ const Player = ({
     audioRef.current.currentTime = e.target.value;
     setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
+
   const skipHandler = (direction) => {
-    const indexOfCurrent = songs.findIndex(
-      (song) => song.id === currentSong.id
-    );
-    if (direction === "back" && songs[indexOfCurrent - 1]) {
-      setCurrentSong(songs[indexOfCurrent - 1]);
-    } else if (direction === "forward") {
-      currentSong.id === songs[songs.length - 1].id && setIsPlaying(false);
-      setCurrentSong(songs[(indexOfCurrent + 1) % songs.length]);
+    if (direction === 'back') {
+      dispatch(prevSong());
+    } else if (direction === 'forward') {
+      if (songs[songs.length - 1].id === currentSong.id) dispatch(stopMusic());
+      dispatch(nextSong());
     }
   };
-  const getTime = (time) =>
-    Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2);
+  const getTime = (time) => Math.floor(time / 60) + ':' + ('0' + Math.floor(time % 60)).slice(-2);
+
   return (
     <div className="player">
       <div className="time-control">
@@ -71,41 +63,30 @@ const Player = ({
           <div
             className="animate-track"
             style={{
-              transform: `translateX(${
-                (songInfo.currentTime / songInfo.duration) * 100
-              }%)`,
+              transform: `translateX(${(songInfo.currentTime / songInfo.duration) * 100}%)`,
             }}
           ></div>
         </div>
 
-        <p>{songInfo.duration ? getTime(songInfo.duration) : "0:00"}</p>
+        <p>{songInfo.duration ? getTime(songInfo.duration) : '0:00'}</p>
       </div>
       <div className="play-control">
         <FontAwesomeIcon
-          className={`skip-back ${
-            currentSong.id === songs[0].id && "disabled"
-          }`}
+          className={`skip-back ${currentSong.id === songs[0].id && 'disabled'}`}
           size="2x"
           icon={faAngleLeft}
-          onClick={() => skipHandler("back")}
+          onClick={() => skipHandler('back')}
         />
+        <FontAwesomeIcon onClick={playClickHandler} className="play" size="2x" icon={isPlaying ? faPause : faPlay} />
         <FontAwesomeIcon
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="play"
-          size="2x"
-          icon={isPlaying ? faPause : faPlay}
-        />
-        <FontAwesomeIcon
-          className={`skip-forward ${
-            currentSong.id === songs[songs.length - 1].id && "disabled"
-          }`}
+          className={`skip-forward ${currentSong.id === songs[songs.length - 1].id && 'disabled'}`}
           size="2x"
           icon={faAngleRight}
-          onClick={() => skipHandler("forward")}
+          onClick={() => skipHandler('forward')}
         />
       </div>
       <audio
-        onEnded={() => skipHandler("forward")}
+        onEnded={() => skipHandler('forward')}
         onTimeUpdate={timeUpdateHandler}
         onLoadedMetadata={timeUpdateHandler}
         ref={audioRef}

@@ -1,10 +1,14 @@
-@import "./variables";
+@import './variables';
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
+}
+
+html {
+  touch-action: none;
 }
 
 body.dark {
@@ -14,6 +18,11 @@ body.dark {
 .App {
   transition: all 0.5s ease;
   min-height: 100vh;
+
+  &.library-opened {
+    margin-left: 20%;
+  }
+
   h1,
   h2 {
     color: $black;
@@ -38,12 +47,8 @@ body.dark {
   }
 }
 
-.library-opened {
-  margin-left: 20%;
-}
-
-@import "./nav";
-@import "./player";
-@import "./song";
-@import "./library";
-@import "./color-theme";
+@import './nav';
+@import './player';
+@import './song';
+@import './library';
+@import './color-theme';
