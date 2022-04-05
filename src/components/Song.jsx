@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useSwipeable } from 'react-swipeable';
 
+import DefaultCover from './DefaultCover';
 import { nextSong, prevSong } from '../actions/song';
 import { stopMusic } from '../actions/player';
 import { getChillHop } from '../data';
@@ -20,7 +21,10 @@ const Song = () => {
 
   return (
     <div className="song-container" {...swipeHandlers}>
-      <img src={currentSong.cover} alt={currentSong.name} />
+      {currentSong?.cover ?
+        <img className='song-cover song-cover_image' src={currentSong?.cover} alt={currentSong.name} /> :
+        <DefaultCover />
+      }
       <h2>{currentSong.name}</h2>
       <h3>{currentSong.artist}</h3>
     </div>
