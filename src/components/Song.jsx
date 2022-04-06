@@ -13,7 +13,6 @@ const Song = () => {
   const dispatch = useDispatch();
   const isPlaying = useSelector((state) => state.isPlaying);
   const currentSong = useSelector((state) => state.currentSong);
-
   const doubleClickHandler = () => isPlaying ? dispatch(stopMusic()) : dispatch(playMusic());
   const doubleTapHandler = useDoubleTap(doubleClickHandler);
   const swipeHandlers = useSwipeable({
