@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
+
+import DefaultCover from './DefaultCover';
 import { playMusic } from '../actions/player';
 import { setCurrentSong } from '../actions/song';
 
@@ -13,7 +15,10 @@ const LibrarySong = ({ song }) => {
 
   return (
     <div className={`library-song ${song.id === currentSong.id && 'active'}`} onClick={chooseSongHandler}>
-      <img src={song.cover} alt={song.name} />
+      {song?.cover ?
+        <img className='song-cover song-cover_image' src={song.cover} alt={song.name} /> :
+        <DefaultCover />
+      }
       <div className="song-description">
         <h3>{song.name}</h3>
         <h4>{song.artist}</h4>
